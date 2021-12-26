@@ -181,7 +181,7 @@ const parser = tokens => {
 const traverser = (ast, visitor) => {
 	const traverseNode = (node, parent = null) => {
 		if (node.type === 'Program') {
-			visitor.Program.enter(node, parent);
+			visitor?.Program?.enter?.(node, parent);
 
 			let current = 0;
 
@@ -193,11 +193,11 @@ const traverser = (ast, visitor) => {
 				continue;
 			}
 
-			visitor.Program.exit(node, parent);
+			visitor?.Program?.exit?.(node, parent);
 		}
 
 		if (node.type === 'CallExpression') {
-			visitor.CallExpression.enter(node, parent);
+			visitor?.CallExpression?.enter?.(node, parent);
 
 			let current = 0;
 
@@ -209,16 +209,18 @@ const traverser = (ast, visitor) => {
 				continue;
 			}
 
-			visitor.CallExpression.exit(node, parent);
+			visitor?.CallExpression?.exit?.(node, parent);
 		}
 
 		if (node.type === 'StringLiteral' || node.type === 'NumberLiteral') {
-			visitor[node.type].enter(node, parent);
-			visitor[node.type].exit(node, parent);
+			visitor?.[node.type]?.enter?.(node, parent);
+			visitor?.[node.type]?.exit?.(node, parent);
 		}
 	};
 
 	traverseNode(ast);
 };
+
+const transformer = ast => {};
 
 module.exports = { tokenizer, parser, traverser };
