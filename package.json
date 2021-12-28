@@ -7,7 +7,7 @@
 		"test": "jest"
 	},
 	"author": "yosefbeder",
-	"license": "ISC",
+	"license": "MIT",
 	"devDependencies": {
 		"jest": "^27.4.5"
 	}
