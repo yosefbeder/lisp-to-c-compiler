@@ -1,4 +1,5 @@
 const { isParen, isWhitespace, isLetter, isNumber } = require('../utils');
+const { Tokens } = require('../constants');
 
 const tokenizer = input => {
 	let current = 0;
@@ -11,7 +12,7 @@ const tokenizer = input => {
 		// parentheses
 		if (isParen(char)) {
 			tokens.push({
-				type: 'paren',
+				type: Tokens.PARENTHESES,
 				value: char,
 			});
 
@@ -35,7 +36,7 @@ const tokenizer = input => {
 			}
 
 			tokens.push({
-				type: 'identifier',
+				type: Tokens.IDENTIFIER,
 				value,
 			});
 
@@ -54,7 +55,7 @@ const tokenizer = input => {
 			}
 
 			tokens.push({
-				type: 'string',
+				type: Tokens.STRING,
 				value,
 			});
 
@@ -72,7 +73,7 @@ const tokenizer = input => {
 			}
 
 			tokens.push({
-				type: 'number',
+				type: Tokens.NUMBER,
 				value: Number(value),
 			});
 

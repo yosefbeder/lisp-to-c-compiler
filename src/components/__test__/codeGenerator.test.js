@@ -1,16 +1,17 @@
 const codeGenerator = require('../codeGenerator');
+const { AstNodes } = require('../../constants');
 
 describe('codeGenerator', () => {
 	it('should turn individual nodes', () => {
 		expect(
 			codeGenerator({
-				type: 'NumberLiteral',
+				type: AstNodes.NUMBER_LITERAL,
 				value: 2,
 			}),
 		).toBe('2');
 		expect(
 			codeGenerator({
-				type: 'StringLiteral',
+				type: AstNodes.STRING_LITERAL,
 				value: 'yosef',
 			}),
 		).toBe('"yosef"');
@@ -19,18 +20,18 @@ describe('codeGenerator', () => {
 	it('should turn string and number nodes inside expression statement', () => {
 		expect(
 			codeGenerator({
-				type: 'ExpressionStatement',
+				type: AstNodes.EXPRESSION_STATEMENT,
 				expression: {
-					type: 'NumberLiteral',
+					type: AstNodes.NUMBER_LITERAL,
 					value: 2,
 				},
 			}),
 		).toBe('2;');
 		expect(
 			codeGenerator({
-				type: 'ExpressionStatement',
+				type: AstNodes.EXPRESSION_STATEMENT,
 				expression: {
-					type: 'StringLiteral',
+					type: AstNodes.STRING_LITERAL,
 					value: 'yosef',
 				},
 			}),
@@ -40,14 +41,14 @@ describe('codeGenerator', () => {
 	it('should turn function nodes (single argument)', () => {
 		expect(
 			codeGenerator({
-				type: 'CallExpression',
+				type: AstNodes.CALL_EXPRESSION,
 				callee: {
-					type: 'Identifier',
+					type: AstNodes.IDENTIFIER,
 					name: 'add',
 				},
 				arguments: [
 					{
-						type: 'NumberLiteral',
+						type: AstNodes.NUMBER_LITERAL,
 						value: 2,
 					},
 				],
@@ -58,18 +59,18 @@ describe('codeGenerator', () => {
 	it('should turn function nodes (multiple argument)', () => {
 		expect(
 			codeGenerator({
-				type: 'CallExpression',
+				type: AstNodes.CALL_EXPRESSION,
 				callee: {
-					type: 'Identifier',
+					type: AstNodes.IDENTIFIER,
 					name: 'add',
 				},
 				arguments: [
 					{
-						type: 'NumberLiteral',
+						type: AstNodes.NUMBER_LITERAL,
 						value: 2,
 					},
 					{
-						type: 'NumberLiteral',
+						type: AstNodes.NUMBER_LITERAL,
 						value: 5,
 					},
 				],
@@ -80,29 +81,29 @@ describe('codeGenerator', () => {
 	it('should turn function nodes recursively', () => {
 		expect(
 			codeGenerator({
-				type: 'CallExpression',
+				type: AstNodes.CALL_EXPRESSION,
 				callee: {
-					type: 'Identifier',
+					type: AstNodes.IDENTIFIER,
 					name: 'add',
 				},
 				arguments: [
 					{
-						type: 'NumberLiteral',
+						type: AstNodes.NUMBER_LITERAL,
 						value: 2,
 					},
 					{
-						type: 'CallExpression',
+						type: AstNodes.CALL_EXPRESSION,
 						callee: {
-							type: 'Identifier',
+							type: AstNodes.IDENTIFIER,
 							name: 'subtract',
 						},
 						arguments: [
 							{
-								type: 'NumberLiteral',
+								type: AstNodes.NUMBER_LITERAL,
 								value: 4,
 							},
 							{
-								type: 'NumberLiteral',
+								type: AstNodes.NUMBER_LITERAL,
 								value: 2,
 							},
 						],
@@ -115,34 +116,34 @@ describe('codeGenerator', () => {
 	it('should transform a whole abstract syntax tree with more than one expression statement', () => {
 		expect(
 			codeGenerator({
-				type: 'Program',
+				type: AstNodes.PROGRAM,
 				body: [
 					{
-						type: 'ExpressionStatement',
+						type: AstNodes.EXPRESSION_STATEMENT,
 						expression: {
-							type: 'CallExpression',
+							type: AstNodes.CALL_EXPRESSION,
 							callee: {
-								type: 'Identifier',
+								type: AstNodes.IDENTIFIER,
 								name: 'add',
 							},
 							arguments: [
 								{
-									type: 'NumberLiteral',
+									type: AstNodes.NUMBER_LITERAL,
 									value: 2,
 								},
 								{
-									type: 'CallExpression',
+									type: AstNodes.CALL_EXPRESSION,
 									callee: {
-										type: 'Identifier',
+										type: AstNodes.IDENTIFIER,
 										name: 'subtract',
 									},
 									arguments: [
 										{
-											type: 'NumberLiteral',
+											type: AstNodes.NUMBER_LITERAL,
 											value: 4,
 										},
 										{
-											type: 'NumberLiteral',
+											type: AstNodes.NUMBER_LITERAL,
 											value: 2,
 										},
 									],
@@ -151,16 +152,16 @@ describe('codeGenerator', () => {
 						},
 					},
 					{
-						type: 'ExpressionStatement',
+						type: AstNodes.EXPRESSION_STATEMENT,
 						expression: {
-							type: 'NumberLiteral',
+							type: AstNodes.NUMBER_LITERAL,
 							value: 2,
 						},
 					},
 					{
-						type: 'ExpressionStatement',
+						type: AstNodes.EXPRESSION_STATEMENT,
 						expression: {
-							type: 'StringLiteral',
+							type: AstNodes.STRING_LITERAL,
 							value: 'yosef',
 						},
 					},

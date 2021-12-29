@@ -1,12 +1,13 @@
 const parser = require('../parser');
+const { AstNodes, Tokens } = require('../../constants');
 
 describe('parser', () => {
 	it('should parse numbers into nodes', () => {
-		expect(parser([{ type: 'number', value: 12 }])).toEqual({
-			type: 'Program',
+		expect(parser([{ type: Tokens.NUMBER, value: 12 }])).toEqual({
+			type: AstNodes.PROGRAM,
 			body: [
 				{
-					type: 'NumberLiteral',
+					type: AstNodes.NUMBER_LITERAL,
 					value: 12,
 				},
 			],
@@ -14,11 +15,11 @@ describe('parser', () => {
 	});
 
 	it('should parse strings into nodes', () => {
-		expect(parser([{ type: 'string', value: '123 123' }])).toEqual({
-			type: 'Program',
+		expect(parser([{ type: Tokens.STRING, value: '123 123' }])).toEqual({
+			type: AstNodes.PROGRAM,
 			body: [
 				{
-					type: 'StringLiteral',
+					type: AstNodes.STRING_LITERAL,
 					value: '123 123',
 				},
 			],
@@ -28,25 +29,25 @@ describe('parser', () => {
 	it('should parse function name and params', () => {
 		expect(
 			parser([
-				{ type: 'paren', value: '(' },
-				{ type: 'identifier', value: 'add' },
-				{ type: 'number', value: 12 },
-				{ type: 'number', value: 27 },
-				{ type: 'paren', value: ')' },
+				{ type: Tokens.PARENTHESES, value: '(' },
+				{ type: Tokens.IDENTIFIER, value: 'add' },
+				{ type: Tokens.NUMBER, value: 12 },
+				{ type: Tokens.NUMBER, value: 27 },
+				{ type: Tokens.PARENTHESES, value: ')' },
 			]),
 		).toEqual({
-			type: 'Program',
+			type: AstNodes.PROGRAM,
 			body: [
 				{
-					type: 'CallExpression',
+					type: AstNodes.CALL_EXPRESSION,
 					name: 'add',
 					params: [
 						{
-							type: 'NumberLiteral',
+							type: AstNodes.NUMBER_LITERAL,
 							value: 12,
 						},
 						{
-							type: 'NumberLiteral',
+							type: AstNodes.NUMBER_LITERAL,
 							value: 27,
 						},
 					],

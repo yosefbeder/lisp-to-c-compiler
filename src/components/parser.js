@@ -1,32 +1,34 @@
+const { Tokens, AstNodes } = require('../constants');
+
 const parser = tokens => {
 	let current = 0;
 
 	function walk() {
 		let token = tokens[current];
 
-		if (token.type === 'number') {
+		if (token.type === Tokens.NUMBER) {
 			current++;
 
 			return {
-				type: 'NumberLiteral',
+				type: AstNodes.NUMBER_LITERAL,
 				value: token.value,
 			};
 		}
 
-		if (token.type === 'string') {
+		if (token.type === Tokens.STRING) {
 			current++;
 
 			return {
-				type: 'StringLiteral',
+				type: AstNodes.STRING_LITERAL,
 				value: token.value,
 			};
 		}
 
-		if (token.type === 'paren' && token.value === '(') {
+		if (token.type === Tokens.PARENTHESES && token.value === '(') {
 			token = tokens[++current];
 
 			let node = {
-				type: 'CallExpression',
+				type: AstNodes.CALL_EXPRESSION,
 				name: token.value,
 				params: [],
 			};
@@ -34,8 +36,8 @@ const parser = tokens => {
 			token = tokens[++current];
 
 			while (
-				token.type !== 'paren' ||
-				(token.type === 'paren' && token.value !== ')')
+				token.type !== Tokens.PARENTHESES ||
+				(Tokens.PARENTHESES && token.value !== ')')
 			) {
 				node.params.push(walk());
 				token = tokens[current];
@@ -50,7 +52,7 @@ const parser = tokens => {
 	}
 
 	let ast = {
-		type: 'Program',
+		type: AstNodes.PROGRAM,
 		body: [],
 	};
 

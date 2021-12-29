@@ -1,19 +1,20 @@
 const traverser = require('../traverser');
+const { AstNodes } = require('../../constants');
 
 describe('traverser', () => {
 	const ast = {
-		type: 'Program',
+		type: AstNodes.PROGRAM,
 		body: [
 			{
-				type: 'CallExpression',
+				type: AstNodes.CALL_EXPRESSION,
 				name: 'add',
 				params: [
 					{
-						type: 'NumberLiteral',
+						type: AstNodes.NUMBER_LITERAL,
 						value: 12,
 					},
 					{
-						type: 'StringLiteral',
+						type: AstNodes.STRING_LITERAL,
 						value: 'Yosef',
 					},
 				],
@@ -25,7 +26,7 @@ describe('traverser', () => {
 		let counter = 0;
 
 		const visitor = {
-			Program: {
+			[AstNodes.PROGRAM]: {
 				enter() {
 					counter++;
 				},
@@ -33,7 +34,7 @@ describe('traverser', () => {
 					counter++;
 				},
 			},
-			CallExpression: {
+			[AstNodes.CALL_EXPRESSION]: {
 				enter() {
 					counter++;
 				},
@@ -41,7 +42,7 @@ describe('traverser', () => {
 					counter++;
 				},
 			},
-			NumberLiteral: {
+			[AstNodes.NUMBER_LITERAL]: {
 				enter() {
 					counter++;
 				},
@@ -49,7 +50,7 @@ describe('traverser', () => {
 					counter++;
 				},
 			},
-			StringLiteral: {
+			[AstNodes.STRING_LITERAL]: {
 				enter() {
 					counter++;
 				},
@@ -66,7 +67,7 @@ describe('traverser', () => {
 
 	it('should pass the parent and the node in each node traversal', () => {
 		const visitor = {
-			Program: {
+			[AstNodes.PROGRAM]: {
 				enter(node, parent) {
 					expect(node).toEqual(ast);
 					expect(parent).toBeNull();
@@ -76,7 +77,7 @@ describe('traverser', () => {
 					expect(parent).toBeNull();
 				},
 			},
-			CallExpression: {
+			[AstNodes.CALL_EXPRESSION]: {
 				enter(node, parent) {
 					expect(parent).toEqual(ast);
 					expect(node).toEqual(ast.body[0]);
@@ -86,7 +87,7 @@ describe('traverser', () => {
 					expect(node).toEqual(ast.body[0]);
 				},
 			},
-			NumberLiteral: {
+			[AstNodes.NUMBER_LITERAL]: {
 				enter(node, parent) {
 					expect(parent).toEqual(ast.body[0]);
 					expect(node).toEqual(ast.body[0].params[0]);
@@ -96,7 +97,7 @@ describe('traverser', () => {
 					expect(node).toEqual(ast.body[0].params[0]);
 				},
 			},
-			StringLiteral: {
+			[AstNodes.STRING_LITERAL]: {
 				enter(node, parent) {
 					expect(parent).toEqual(ast.body[0]);
 					expect(node).toEqual(ast.body[0].params[1]);

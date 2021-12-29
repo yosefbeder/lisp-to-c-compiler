@@ -1,24 +1,25 @@
 const transformer = require('../transformer');
+const { AstNodes } = require('../../constants');
 
 describe('transformer', () => {
 	it('should push a new expression statement to the new ast if the parent is body', () => {
 		expect(
 			transformer({
-				type: 'Program',
+				type: AstNodes.PROGRAM,
 				body: [
 					{
-						type: 'NumberLiteral',
+						type: AstNodes.NUMBER_LITERAL,
 						value: 2,
 					},
 				],
 			}),
 		).toEqual({
-			type: 'Program',
+			type: AstNodes.PROGRAM,
 			body: [
 				{
-					type: 'ExpressionStatement',
+					type: AstNodes.EXPRESSION_STATEMENT,
 					expression: {
-						type: 'NumberLiteral',
+						type: AstNodes.NUMBER_LITERAL,
 						value: 2,
 					},
 				},
@@ -29,14 +30,14 @@ describe('transformer', () => {
 	it('should modify function expression', () => {
 		expect(
 			transformer({
-				type: 'Program',
+				type: AstNodes.PROGRAM,
 				body: [
 					{
-						type: 'CallExpression',
+						type: AstNodes.CALL_EXPRESSION,
 						name: 'add',
 						params: [
 							{
-								type: 'NumberLiteral',
+								type: AstNodes.NUMBER_LITERAL,
 								value: 2,
 							},
 						],
@@ -44,20 +45,20 @@ describe('transformer', () => {
 				],
 			}),
 		).toEqual({
-			type: 'Program',
+			type: AstNodes.PROGRAM,
 			body: [
 				{
-					type: 'ExpressionStatement',
+					type: AstNodes.EXPRESSION_STATEMENT,
 
 					expression: {
-						type: 'CallExpression',
+						type: AstNodes.CALL_EXPRESSION,
 						callee: {
-							type: 'Identifier',
+							type: AstNodes.IDENTIFIER,
 							name: 'add',
 						},
 						arguments: [
 							{
-								type: 'NumberLiteral',
+								type: AstNodes.NUMBER_LITERAL,
 								value: 2,
 							},
 						],
@@ -70,26 +71,26 @@ describe('transformer', () => {
 	it('should work in a real world example', () => {
 		expect(
 			transformer({
-				type: 'Program',
+				type: AstNodes.PROGRAM,
 				body: [
 					{
-						type: 'CallExpression',
+						type: AstNodes.CALL_EXPRESSION,
 						name: 'add',
 						params: [
 							{
-								type: 'NumberLiteral',
+								type: AstNodes.NUMBER_LITERAL,
 								value: 2,
 							},
 							{
-								type: 'CallExpression',
+								type: AstNodes.CALL_EXPRESSION,
 								name: 'subtract',
 								params: [
 									{
-										type: 'NumberLiteral',
+										type: AstNodes.NUMBER_LITERAL,
 										value: 4,
 									},
 									{
-										type: 'NumberLiteral',
+										type: AstNodes.NUMBER_LITERAL,
 										value: 2,
 									},
 								],
@@ -99,34 +100,34 @@ describe('transformer', () => {
 				],
 			}),
 		).toEqual({
-			type: 'Program',
+			type: AstNodes.PROGRAM,
 			body: [
 				{
-					type: 'ExpressionStatement',
+					type: AstNodes.EXPRESSION_STATEMENT,
 					expression: {
-						type: 'CallExpression',
+						type: AstNodes.CALL_EXPRESSION,
 						callee: {
-							type: 'Identifier',
+							type: AstNodes.IDENTIFIER,
 							name: 'add',
 						},
 						arguments: [
 							{
-								type: 'NumberLiteral',
+								type: AstNodes.NUMBER_LITERAL,
 								value: 2,
 							},
 							{
-								type: 'CallExpression',
+								type: AstNodes.CALL_EXPRESSION,
 								callee: {
-									type: 'Identifier',
+									type: AstNodes.IDENTIFIER,
 									name: 'subtract',
 								},
 								arguments: [
 									{
-										type: 'NumberLiteral',
+										type: AstNodes.NUMBER_LITERAL,
 										value: 4,
 									},
 									{
-										type: 'NumberLiteral',
+										type: AstNodes.NUMBER_LITERAL,
 										value: 2,
 									},
 								],
