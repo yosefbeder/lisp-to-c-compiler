@@ -4,7 +4,8 @@ const { AstNodes } = require('../constants');
 const transformNode = node => {
 	if (
 		node.type === AstNodes.NUMBER_LITERAL ||
-		node.type === AstNodes.STRING_LITERAL
+		node.type === AstNodes.STRING_LITERAL ||
+		node.type === AstNodes.IDENTIFIER
 	) {
 		return node;
 	}
@@ -37,6 +38,16 @@ const transformer = ast => {
 			},
 		},
 		[AstNodes.STRING_LITERAL]: {
+			enter(node, parent) {
+				if (parent.type === AstNodes.PROGRAM) {
+					newAst.body.push({
+						type: AstNodes.EXPRESSION_STATEMENT,
+						expression: node,
+					});
+				}
+			},
+		},
+		[AstNodes.IDENTIFIER]: {
 			enter(node, parent) {
 				if (parent.type === AstNodes.PROGRAM) {
 					newAst.body.push({

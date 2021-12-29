@@ -15,6 +15,12 @@ describe('codeGenerator', () => {
 				value: 'yosef',
 			}),
 		).toBe('"yosef"');
+		expect(
+			codeGenerator({
+				type: AstNodes.IDENTIFIER,
+				name: 'x',
+			}),
+		).toBe('x');
 	});
 
 	it('should turn string and number nodes inside expression statement', () => {
@@ -36,6 +42,15 @@ describe('codeGenerator', () => {
 				},
 			}),
 		).toBe('"yosef";');
+		expect(
+			codeGenerator({
+				type: AstNodes.EXPRESSION_STATEMENT,
+				expression: {
+					type: AstNodes.IDENTIFIER,
+					name: 'x',
+				},
+			}),
+		).toBe('x;');
 	});
 
 	it('should turn function nodes (single argument)', () => {
@@ -103,14 +118,14 @@ describe('codeGenerator', () => {
 								value: 4,
 							},
 							{
-								type: AstNodes.NUMBER_LITERAL,
-								value: 2,
+								type: AstNodes.IDENTIFIER,
+								name: 'x',
 							},
 						],
 					},
 				],
 			}),
-		).toBe('add(2, subtract(4, 2))');
+		).toBe('add(2, subtract(4, x))');
 	});
 
 	it('should transform a whole abstract syntax tree with more than one expression statement', () => {
@@ -165,8 +180,15 @@ describe('codeGenerator', () => {
 							value: 'yosef',
 						},
 					},
+					{
+						type: AstNodes.EXPRESSION_STATEMENT,
+						expression: {
+							type: AstNodes.IDENTIFIER,
+							name: 'x',
+						},
+					},
 				],
 			}),
-		).toBe('add(2, subtract(4, 2));\n2;\n"yosef";');
+		).toBe('add(2, subtract(4, 2));\n2;\n"yosef";\nx;');
 	});
 });

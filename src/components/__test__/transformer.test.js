@@ -25,6 +25,50 @@ describe('transformer', () => {
 				},
 			],
 		});
+		expect(
+			transformer({
+				type: AstNodes.PROGRAM,
+				body: [
+					{
+						type: AstNodes.STRING_LITERAL,
+						value: '123 123',
+					},
+				],
+			}),
+		).toEqual({
+			type: AstNodes.PROGRAM,
+			body: [
+				{
+					type: AstNodes.EXPRESSION_STATEMENT,
+					expression: {
+						type: AstNodes.STRING_LITERAL,
+						value: '123 123',
+					},
+				},
+			],
+		});
+		expect(
+			transformer({
+				type: AstNodes.PROGRAM,
+				body: [
+					{
+						type: AstNodes.IDENTIFIER,
+						name: 'x',
+					},
+				],
+			}),
+		).toEqual({
+			type: AstNodes.PROGRAM,
+			body: [
+				{
+					type: AstNodes.EXPRESSION_STATEMENT,
+					expression: {
+						type: AstNodes.IDENTIFIER,
+						name: 'x',
+					},
+				},
+			],
+		});
 	});
 
 	it('should modify function expression', () => {
@@ -90,8 +134,8 @@ describe('transformer', () => {
 										value: 4,
 									},
 									{
-										type: AstNodes.NUMBER_LITERAL,
-										value: 2,
+										type: AstNodes.IDENTIFIER,
+										name: 'x',
 									},
 								],
 							},
@@ -127,8 +171,8 @@ describe('transformer', () => {
 										value: 4,
 									},
 									{
-										type: AstNodes.NUMBER_LITERAL,
-										value: 2,
+										type: AstNodes.IDENTIFIER,
+										name: 'x',
 									},
 								],
 							},

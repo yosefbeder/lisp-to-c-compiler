@@ -9,6 +9,10 @@ const codeGenerator = node => {
 		return `"${node.value}"`;
 	}
 
+	if (node.type === AstNodes.IDENTIFIER) {
+		return node.name;
+	}
+
 	if (node.type === AstNodes.CALL_EXPRESSION) {
 		return `${node.callee.name}(${node.arguments
 			.map(node => codeGenerator(node))

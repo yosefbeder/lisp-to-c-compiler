@@ -17,6 +17,10 @@ describe('traverser', () => {
 						type: AstNodes.STRING_LITERAL,
 						value: 'Yosef',
 					},
+					{
+						type: AstNodes.IDENTIFIER,
+						name: 'x',
+					},
 				],
 			},
 		],
@@ -58,11 +62,19 @@ describe('traverser', () => {
 					counter++;
 				},
 			},
+			[AstNodes.IDENTIFIER]: {
+				enter() {
+					counter++;
+				},
+				exit() {
+					counter++;
+				},
+			},
 		};
 
 		traverser(ast, visitor);
 
-		expect(counter).toBe(8);
+		expect(counter).toBe(10);
 	});
 
 	it('should pass the parent and the node in each node traversal', () => {
@@ -105,6 +117,16 @@ describe('traverser', () => {
 				exit(node, parent) {
 					expect(parent).toEqual(ast.body[0]);
 					expect(node).toEqual(ast.body[0].params[1]);
+				},
+			},
+			[AstNodes.IDENTIFIER]: {
+				enter(node, parent) {
+					expect(parent).toEqual(ast.body[0]);
+					expect(node).toEqual(ast.body[0].params[2]);
+				},
+				exit(node, parent) {
+					expect(parent).toEqual(ast.body[0]);
+					expect(node).toEqual(ast.body[0].params[2]);
 				},
 			},
 		};

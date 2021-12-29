@@ -36,7 +36,8 @@ const traverser = (ast, visitor) => {
 
 		if (
 			node.type === AstNodes.STRING_LITERAL ||
-			node.type === AstNodes.NUMBER_LITERAL
+			node.type === AstNodes.NUMBER_LITERAL ||
+			node.type === AstNodes.IDENTIFIER
 		) {
 			visitor?.[node.type]?.enter?.(node, parent);
 			visitor?.[node.type]?.exit?.(node, parent);

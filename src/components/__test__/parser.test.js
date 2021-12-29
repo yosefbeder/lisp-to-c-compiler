@@ -26,6 +26,18 @@ describe('parser', () => {
 		});
 	});
 
+	it('should parse identifiers', () => {
+		expect(parser([{ type: Tokens.IDENTIFIER, value: 'x' }])).toEqual({
+			type: AstNodes.PROGRAM,
+			body: [
+				{
+					type: AstNodes.IDENTIFIER,
+					name: 'x',
+				},
+			],
+		});
+	});
+
 	it('should parse function name and params', () => {
 		expect(
 			parser([
@@ -33,6 +45,7 @@ describe('parser', () => {
 				{ type: Tokens.IDENTIFIER, value: 'add' },
 				{ type: Tokens.NUMBER, value: 12 },
 				{ type: Tokens.NUMBER, value: 27 },
+				{ type: Tokens.IDENTIFIER, value: 'x' },
 				{ type: Tokens.PARENTHESES, value: ')' },
 			]),
 		).toEqual({
@@ -49,6 +62,10 @@ describe('parser', () => {
 						{
 							type: AstNodes.NUMBER_LITERAL,
 							value: 27,
+						},
+						{
+							type: AstNodes.IDENTIFIER,
+							name: 'x',
 						},
 					],
 				},

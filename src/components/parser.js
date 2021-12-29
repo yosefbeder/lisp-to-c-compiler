@@ -24,6 +24,15 @@ const parser = tokens => {
 			};
 		}
 
+		if (token.type === Tokens.IDENTIFIER) {
+			current++;
+
+			return {
+				type: AstNodes.IDENTIFIER,
+				name: token.value,
+			};
+		}
+
 		if (token.type === Tokens.PARENTHESES && token.value === '(') {
 			token = tokens[++current];
 
